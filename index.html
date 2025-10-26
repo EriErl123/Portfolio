@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — IT ERA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+      :root{
+        --bg:#050505;
+        --panel:#0b0b0b;
+        --muted:#9bdc8a; /* light green */
+        --accent:#00ff66; /* bright accent */
+        --glass: rgba(255,255,255,0.03);
+        --radius:14px;
+        --maxW:1100px;
+        --glass-2: rgba(0,0,0,0.5);
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%;}
+      body{
+        margin:0;
+        font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        background:linear-gradient(180deg,var(--bg) 0%, #070707 60%);
+        color:#e6ffe6;
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+      }
+      .container{max-width:var(--maxW);margin:40px auto;padding:24px;position:relative;z-index:2}
+
+      /* Alive full-page background */
+      .bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+      .bg-grid{position:absolute;inset:0;background:
+        repeating-linear-gradient(90deg, rgba(0,255,102,0.06) 0 1px, transparent 1px 80px),
+        repeating-linear-gradient(0deg, rgba(0,255,102,0.06) 0 1px, transparent 1px 80px);
+        filter:drop-shadow(0 0 2px rgba(0,255,102,0.1));
+        animation:bg-pan 30s linear infinite;
+      }
+      .bg-glow{position:absolute;width:60vmax;height:60vmax;left:50%;top:20%;transform:translate(-50%,-50%);background:radial-gradient(circle at center, rgba(0,255,102,0.18), transparent 60%);filter:blur(40px);animation:float 12s ease-in-out infinite alternate}
+      @keyframes bg-pan{to{background-position:400px 400px}}
+      @keyframes float{from{transform:translate(-50%,-52%)} to{transform:translate(-50%,-48%)}}
+
+      /* NAV */
+      header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+      .logo{display:flex;gap:12px;align-items:center;font-weight:700;color:var(--muted)}
+      .logo .mark{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--muted),var(--accent));display:flex;align-items:center;justify-content:center;color:#050505;font-weight:800}
+      nav{display:flex;gap:18px;align-items:center}
+      nav a{color:rgba(255,255,255,0.85);text-decoration:none;padding:8px 12px;border-radius:10px;font-weight:600}
+      nav a.cta{background:linear-gradient(90deg,var(--muted),var(--accent));color:#050505}
+      .hamburger{display:none;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px}
+
+      /* HERO */
+  .hero{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:28px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.6);backdrop-filter: blur(6px);min-height:60vh}
+      .profile{display:flex;flex-direction:column;align-items:center;text-align:center;padding:8px}
+      .avatar{width:180px;height:180px;border-radius:18px;object-fit:cover;display:block;border:4px solid rgba(0,0,0,0.6);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+      .name{font-size:1.8rem;font-weight:800;margin:12px 0 6px;color:var(--muted)}
+      .role{color:rgba(255,255,255,0.75);margin:0 0 12px}
+  .socials{display:flex;gap:10px}
+  /* Icon pills: icon-only by default, expand label on hover */
+  .icon-pill{display:inline-flex;align-items:center;gap:6px;background:var(--glass);padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.06);color:#eaffea;text-decoration:none;overflow:hidden}
+  .icon-pill svg{width:18px;height:18px;fill:currentColor;opacity:0.9}
+  .icon-pill .label{max-width:0;opacity:0;white-space:nowrap;transform:translateX(-6px);transition:max-width .25s ease, opacity .25s ease, transform .25s ease}
+  .icon-pill:hover .label, .icon-pill:focus-visible .label{max-width:140px;opacity:1;transform:none}
+
+  .summary h2{margin:0 0 8px;font-size:1.6rem}
+      .summary p{color:rgba(255,255,255,0.8);line-height:1.6}
+      .actions{margin-top:18px;display:flex;gap:12px}
+      .btn{padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+      .btn-primary{background:linear-gradient(90deg,var(--muted),var(--accent));color:#050505}
+      .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.9)}
+
+  /* Cards & Grid (still used in profile and about) */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+      .card{background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.02));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+      .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+      .card h3{margin:0 0 6px;color:var(--muted)}
+      .card p{margin:0;color:rgba(255,255,255,0.75);font-size:0.95rem}
+
+  /* Gallery Modal */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:5}
+  .modal.show{display:flex}
+  .backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px)}
+  .dialog{position:relative;width:min(1100px,92vw);max-height:88vh;background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.06);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,0.6);padding:16px;overflow:hidden}
+  .dialog header{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 12px}
+  .dialog h3{margin:0;color:var(--muted)}
+  .close-btn{background:transparent;border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:10px;padding:8px 10px;cursor:pointer}
+  .thumb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;overflow:auto;max-height:70vh;padding:4px}
+  .thumb{position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);cursor:pointer}
+  .thumb img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .4s ease}
+  .thumb:hover img{transform:scale(1.05)}
+  .thumb .label{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,0.45);padding:4px 8px;border-radius:999px;font-size:.8rem}
+
+  /* Lightbox */
+  .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:6}
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:90vw;max-height:80vh;border-radius:12px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 80px rgba(0,0,0,0.7)}
+  .nav-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:999px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .nav-btn.prev{left:20px}
+  .nav-btn.next{right:20px}
+  .nav-btn:hover{background:rgba(0,0,0,0.7)}
+
+  /* Reveal-on-scroll */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.revealed{opacity:1;transform:none}
+
+  /* Horizontal image scroller (replaces contact form) */
+  .contact{margin-top:30px;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.2));border:1px solid rgba(255,255,255,0.03)}
+  .h-scroll{position:relative;overflow:auto;padding:8px;scroll-behavior:smooth}
+  .h-track{display:flex;gap:12px;scroll-snap-type:x mandatory}
+  .h-item{flex:0 0 auto;scroll-snap-align:start;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:var(--panel)}
+  .h-item img{display:block;width:280px;height:180px;object-fit:cover}
+  .h-scroll::before,.h-scroll::after{content:"";position:absolute;top:0;bottom:0;width:60px;pointer-events:none}
+  .h-scroll::before{left:0;background:linear-gradient(90deg, rgba(5,5,5,0.9), rgba(5,5,5,0))}
+  .h-scroll::after{right:0;background:linear-gradient(270deg, rgba(5,5,5,0.9), rgba(5,5,5,0))}
+
+      footer{margin-top:28px;text-align:center;color:rgba(255,255,255,0.5);font-size:0.9rem}
+
+      @media (max-width:900px){
+        .hero{grid-template-columns:1fr;}
+        .grid{grid-template-columns:repeat(2,1fr)}
+        .thumb-grid{grid-template-columns:repeat(2,1fr)}
+      }
+      @media (max-width:600px){
+        nav{display:none}
+        .hamburger{display:inline-block}
+        .grid{grid-template-columns:1fr}
+        .thumb-grid{grid-template-columns:1fr}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-wrap" aria-hidden="true">
+      <div class="bg-grid"></div>
+      <div class="bg-glow"></div>
+    </div>
+    <div class="container">
+      <header>
+        <div class="logo">
+          <div class="mark">CH</div>
+          <div>
+            <div style="font-weight:800">Christine P. Rodulfa</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.55)">BSBIO • 3RD YEAR</div>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#about">About</a>
+          <a href="#" onclick="openGalleryModal();return false;">Gallery</a>
+          <a href="#contact" class="cta">Contact</a>
+        </nav>
+
+        <button class="hamburger" aria-label="menu" onclick="toggleMenu()">☰</button>
+      </header>
+
+      <main class="hero">
+        <aside class="profile card">
+          <img class="avatar" src="profile.jpg" alt="Profile photo" onerror="this.style.objectFit='cover'" />
+          <div class="name">Christine P. Rodulfa</div>
+          <div class="role">BSBIO • 3RD YEAR</div>
+          <div class="socials">
+            <a class="icon-pill" href="https://www.facebook.com/christine.rodulfa.03" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.07C22 6.49 17.52 2 11.93 2 6.35 2 1.86 6.49 1.86 12.07c0 4.99 3.63 9.13 8.38 10.01v-7.08H7.9v-2.93h2.34V9.41c0-2.31 1.37-3.59 3.48-3.59.99 0 2.02.18 2.02.18v2.22h-1.14c-1.12 0-1.47.7-1.47 1.42v1.7h2.51l-.4 2.93h-2.11v7.08c4.75-.88 8.38-5.02 8.38-10.01z"/></svg>
+              <span class="label">Facebook</span>
+            </a>
+            <a class="icon-pill" href="https://www.instagram.com/_cehiinrst_?igsh=NzR5aDB2MjV5Nmtz" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.8A5.2 5.2 0 1 1 6.8 13 5.2 5.2 0 0 1 12 7.8zm0 2a3.2 3.2 0 1 0 3.2 3.2A3.2 3.2 0 0 0 12 9.8zm5.55-3.05a1.15 1.15 0 1 1-1.15 1.15 1.15 1.15 0 0 1 1.15-1.15z"/></svg>
+              <span class="label">Instagram</span>
+            </a>
+          </div>
+        </aside>
+
+        <section class="summary">
+          <h2 class="reveal">Enjoy traveling and exploring places</h2>
+          <p>
+           I’m a nature lover with a passion for traveling and exploring new places, 
+           always seeking fresh experiences and capturing the beauty of the world around me.
+          </p>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="openGalleryModal()">Open Gallery</button>
+            <button class="btn btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Me</button>
+          </div>
+        </section>
+
+        <!-- Projects section removed; replaced by a modal gallery -->
+
+        <section id="about" style="grid-column: 1 / -1; margin-top:22px" class="card">
+          <h3 style="color:var(--muted)">About me</h3>
+          <p style="color:rgba(255,255,255,0.85)">
+            I’m a designer and developer focused on building beautiful interfaces and fast experiences.
+            I enjoy collaborating with teams to ship features that people love to use.
+          </p>
+        </section>
+
+        <section id="contact" style="grid-column: 1 / -1; margin-top:22px" class="contact">
+          <div class="h-scroll" tabindex="0" aria-label="Scrollable image strip">
+            <div class="h-track" id="hTrack"></div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer>
+        <div>© <span id="year"></span> Christine P. Rodulfa — Built with ❤️</div>
+      </footer>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal" aria-hidden="true" role="dialog" aria-label="Nature Photo Gallery">
+      <div class="backdrop" onclick="closeGalleryModal()"></div>
+      <div class="dialog" role="document">
+        <header>
+          <h3>Nature Gallery</h3>
+          <button class="close-btn" onclick="closeGalleryModal()">Close ✕</button>
+        </header>
+        <div id="thumbGrid" class="thumb-grid" tabindex="0"></div>
+      </div>
+    </div>
+
+    <!-- Lightbox Viewer -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <div class="backdrop" onclick="closeLightbox()"></div>
+      <button class="nav-btn prev" onclick="prevPhoto()" aria-label="Previous">‹</button>
+      <img id="lightboxImage" alt="Selected photo" />
+      <button class="nav-btn next" onclick="nextPhoto()" aria-label="Next">›</button>
+    </div>
+
+    <script>
+      // small helpers
+      document.getElementById('year').textContent = new Date().getFullYear();
+      function toggleMenu(){
+        const nav = document.querySelector('nav');
+        if(!nav) return;
+        nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+      }
+      // simple keyboard accessibility for demo
+      document.addEventListener('keydown', e => {
+        if(e.key === 'Escape'){
+          closeLightbox();
+          closeGalleryModal();
+          document.querySelectorAll('nav').forEach(n=>n.style.display='none');
+        }
+        if(e.key === 'ArrowRight') nextPhoto();
+        if(e.key === 'ArrowLeft') prevPhoto();
+      });
+
+      // Reveal on scroll
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('revealed'); io.unobserve(en.target);} });
+      }, {threshold:0.15});
+      document.querySelectorAll('.reveal, .card, .contact').forEach(el=>{ el.classList.add('reveal'); io.observe(el); });
+
+      // Rotating role text to feel alive
+      const roleEl = document.querySelector('.role');
+      if(roleEl){
+        const roles = ['BSBIO • 3RD YEAR','Traveler','Explorer','Nature Lover'];
+        let idx = 0;
+        setInterval(()=>{ idx=(idx+1)%roles.length; roleEl.textContent = roles[idx]; }, 2500);
+      }
+
+      // Dynamic Gallery (modal grid)
+      const photos = [
+        {src:'nature1.jpg', label:'Forest'},
+        {src:'nature2.jpg', label:'Waterfall'},
+        {src:'nature3.jpg', label:'Mountain'},
+        {src:'nature4.jpg', label:'Lakeside'},
+        {src:'nature5.jpg', label:'Sunset'},
+        {src:'nature6.jpg', label:'Meadow'},
+        {src:'nature7.jpg', label:'Canyon'},
+        {src:'nature8.jpg', label:'River'},
+        {src:'nature9.jpg', label:'Ocean'}
+      ];
+
+      // If local images are missing, fallback to Unsplash
+      const fallbacks = [
+        'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1600&q=80&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=80&auto=format&fit=crop'
+      ];
+
+      let galleryIndex = 0;
+      const thumbGrid = document.getElementById('thumbGrid');
+      function buildThumbs(){
+        if(!thumbGrid) return;
+        thumbGrid.innerHTML = '';
+        photos.forEach((p,i)=>{
+          const a = document.createElement('div');
+          a.className = 'thumb';
+          const img = document.createElement('img');
+          img.src = p.src;
+          img.alt = p.label || 'Photo';
+          img.onerror = () => { img.src = fallbacks[i%fallbacks.length]; };
+          a.appendChild(img);
+          const lab = document.createElement('div'); lab.className='label'; lab.textContent=p.label||''; a.appendChild(lab);
+          a.addEventListener('click',()=> openLightbox(i, img.src));
+          thumbGrid.appendChild(a);
+        });
+      }
+
+      // Build horizontal strip from the same photos
+      const hTrack = document.getElementById('hTrack');
+      function buildStrip(){
+        if(!hTrack) return;
+        hTrack.innerHTML = '';
+        // Double the set for a longer scroll feel
+        const set = [...photos, ...photos];
+        set.forEach((p,i)=>{
+          const item = document.createElement('div');
+          item.className = 'h-item';
+          const img = document.createElement('img');
+          img.src = p.src;
+          img.alt = p.label || 'Photo';
+          img.onerror = () => { img.src = fallbacks[i%fallbacks.length]; };
+          item.appendChild(img);
+          hTrack.appendChild(item);
+        });
+      }
+
+      function openGalleryModal(){
+        buildThumbs();
+        const m = document.getElementById('galleryModal');
+        if(!m) return;
+        m.classList.add('show');
+        m.setAttribute('aria-hidden','false');
+        setTimeout(()=>{ document.getElementById('thumbGrid')?.focus(); }, 0);
+      }
+      function closeGalleryModal(){
+        const m = document.getElementById('galleryModal');
+        if(!m) return;
+        m.classList.remove('show');
+        m.setAttribute('aria-hidden','true');
+      }
+
+      function openLightbox(i, src){
+        galleryIndex = i;
+        const lb = document.getElementById('lightbox');
+        const img = document.getElementById('lightboxImage');
+        if(!lb||!img) return;
+        img.src = src;
+        lb.classList.add('show');
+        lb.setAttribute('aria-hidden','false');
+      }
+      function closeLightbox(){
+        const lb = document.getElementById('lightbox');
+        if(!lb) return;
+        lb.classList.remove('show');
+        lb.setAttribute('aria-hidden','true');
+      }
+      function nextPhoto(){
+        const lbImg = document.getElementById('lightboxImage');
+        if(!lbImg) return;
+        galleryIndex = (galleryIndex+1)%photos.length;
+        lbImg.src = document.querySelectorAll('.thumb img')[galleryIndex]?.src || lbImg.src;
+      }
+      function prevPhoto(){
+        const lbImg = document.getElementById('lightboxImage');
+        if(!lbImg) return;
+        galleryIndex = (galleryIndex-1+photos.length)%photos.length;
+        lbImg.src = document.querySelectorAll('.thumb img')[galleryIndex]?.src || lbImg.src;
+      }
+
+      // Initialize horizontal strip on load
+      buildStrip();
+    </script>
+  </body>
+</html>
