@@ -28,7 +28,7 @@
         -webkit-font-smoothing:antialiased;
         -moz-osx-font-smoothing:grayscale;
       }
-      .container{max-width:var(--maxW);margin:40px auto;padding:24px;position:relative;z-index:2}
+  .container{max-width:var(--maxW);margin:32px auto;padding:16px;position:relative;z-index:2}
 
       /* Alive full-page background */
       .bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
@@ -54,7 +54,19 @@
       /* HERO */
   .hero{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:28px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.6);backdrop-filter: blur(6px);min-height:60vh}
       .profile{display:flex;flex-direction:column;align-items:center;text-align:center;padding:8px}
-      .avatar{width:180px;height:180px;border-radius:18px;object-fit:cover;display:block;border:4px solid rgba(0,0,0,0.6);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+  /* Avatar: responsive square, centered, never stretched */
+  .avatar{
+    display:block;
+    width:clamp(140px, 45vw, 220px);
+    aspect-ratio:1 / 1;
+    height:auto;
+    border-radius:18px;
+    object-fit:cover;
+    object-position:center;
+    margin-inline:auto;
+    border:4px solid rgba(0,0,0,0.6);
+    box-shadow:0 10px 30px rgba(0,0,0,0.6)
+  }
       .name{font-size:1.8rem;font-weight:800;margin:12px 0 6px;color:var(--muted)}
       .role{color:rgba(255,255,255,0.75);margin:0 0 12px}
   .socials{display:flex;gap:10px}
@@ -73,8 +85,8 @@
 
   /* Cards & Grid (still used in profile and about) */
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
-      .card{background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.02));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-      .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+      /* Exclude avatar from generic card image sizing to prevent stretching */
+      .card img:not(.avatar){width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:12px}
       .card h3{margin:0 0 6px;color:var(--muted)}
       .card p{margin:0;color:rgba(255,255,255,0.75);font-size:0.95rem}
 
@@ -107,24 +119,53 @@
 
   /* Horizontal image scroller (replaces contact form) */
   .contact{margin-top:30px;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.2));border:1px solid rgba(255,255,255,0.03)}
-  .h-scroll{position:relative;overflow:auto;padding:8px;scroll-behavior:smooth}
-  .h-track{display:flex;gap:12px;scroll-snap-type:x mandatory}
-  .h-item{flex:0 0 auto;scroll-snap-align:start;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);background:var(--panel)}
-  .h-item img{display:block;width:280px;height:180px;object-fit:cover}
-  .h-scroll::before,.h-scroll::after{content:"";position:absolute;top:0;bottom:0;width:60px;pointer-events:none}
+  .h-wrap{position:relative}
+  .h-scroll{position:relative;overflow:auto;padding:8px;scroll-behavior:smooth;cursor:grab;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color: var(--accent) rgba(255,255,255,0.06)}
+  .h-scroll.grabbing{cursor:grabbing}
+  .h-scroll::-webkit-scrollbar{height:8px}
+  .h-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,0.06);border-radius:999px}
+  .h-scroll::-webkit-scrollbar-thumb{background:linear-gradient(90deg,var(--muted),var(--accent));border-radius:999px}
+  .h-track{display:flex;gap:14px;scroll-snap-type:x mandatory;padding:2px 4px}
+  .h-item{flex:0 0 auto;scroll-snap-align:start;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:var(--panel);box-shadow:0 10px 24px rgba(0,0,0,0.35);transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease}
+  .h-item:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,255,102,0.15);border-color:rgba(0,255,102,0.25)}
+  .h-item img{display:block;width:320px;height:200px;object-fit:cover;transition:transform .3s ease}
+  .h-item:hover img{transform:scale(1.04)}
+  .h-scroll::before,.h-scroll::after{content:"";position:absolute;top:0;bottom:0;width:70px;pointer-events:none}
   .h-scroll::before{left:0;background:linear-gradient(90deg, rgba(5,5,5,0.9), rgba(5,5,5,0))}
   .h-scroll::after{right:0;background:linear-gradient(270deg, rgba(5,5,5,0.9), rgba(5,5,5,0))}
+
+  /* Scroll buttons */
+  .h-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;z-index:1;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s ease, background .2s ease}
+  .h-btn:hover{background:rgba(0,0,0,0.7)}
+  .h-btn.left{left:6px}
+  .h-btn.right{right:6px}
+  .h-wrap:hover .h-btn, .h-btn:focus-visible{opacity:1}
+
+  @media (max-width:900px){
+    .h-item img{width:260px;height:165px}
+  }
+  @media (max-width:600px){
+    .h-item img{width:220px;height:140px}
+  }
 
       footer{margin-top:28px;text-align:center;color:rgba(255,255,255,0.5);font-size:0.9rem}
 
       @media (max-width:900px){
-        .hero{grid-template-columns:1fr;}
+        .container{margin:24px auto;padding:14px}
+        .hero{grid-template-columns:1fr;padding:20px}
         .grid{grid-template-columns:repeat(2,1fr)}
         .thumb-grid{grid-template-columns:repeat(2,1fr)}
       }
       @media (max-width:600px){
+        .container{margin:14px auto;padding:10px}
         nav{display:none}
         .hamburger{display:inline-block}
+        .hero{grid-template-columns:1fr;padding:16px;border-radius:12px;min-height:auto}
+  /* Only adjust width; height follows from aspect-ratio to keep it square */
+  .avatar{width:min(75vw, 220px)}
+        .summary h2{font-size:1.3rem}
+        .summary p{font-size:0.95rem}
+        .socials{justify-content:center;flex-wrap:wrap}
         .grid{grid-template-columns:1fr}
         .thumb-grid{grid-template-columns:1fr}
       }
@@ -188,14 +229,18 @@
         <section id="about" style="grid-column: 1 / -1; margin-top:22px" class="card">
           <h3 style="color:var(--muted)">About me</h3>
           <p style="color:rgba(255,255,255,0.85)">
-            I’m a designer and developer focused on building beautiful interfaces and fast experiences.
-            I enjoy collaborating with teams to ship features that people love to use.
+           I’m a nature explorer at heart — always on the move, traveling to new places, chasing sunsets, 
+           and discovering the beauty of the world one adventure at a time.
           </p>
         </section>
 
         <section id="contact" style="grid-column: 1 / -1; margin-top:22px" class="contact">
-          <div class="h-scroll" tabindex="0" aria-label="Scrollable image strip">
-            <div class="h-track" id="hTrack"></div>
+          <div class="h-wrap">
+            <button class="h-btn left" onclick="scrollStripBy(-1)" aria-label="Scroll left">‹</button>
+            <div id="hScroll" class="h-scroll" tabindex="0" aria-label="Scrollable image strip">
+              <div class="h-track" id="hTrack"></div>
+            </div>
+            <button class="h-btn right" onclick="scrollStripBy(1)" aria-label="Scroll right">›</button>
           </div>
         </section>
 
@@ -306,6 +351,7 @@
 
       // Build horizontal strip from the same photos
       const hTrack = document.getElementById('hTrack');
+      const hScroll = document.getElementById('hScroll');
       function buildStrip(){
         if(!hTrack) return;
         hTrack.innerHTML = '';
@@ -320,6 +366,33 @@
           img.onerror = () => { img.src = fallbacks[i%fallbacks.length]; };
           item.appendChild(img);
           hTrack.appendChild(item);
+        });
+      }
+
+      // Button scrolling
+      function scrollStripBy(dir){
+        const el = hScroll;
+        if(!el) return;
+        const amount = Math.round(el.clientWidth * 0.85) * dir;
+        el.scrollBy({left: amount, behavior: 'smooth'});
+      }
+
+      // Drag to scroll
+      if(hScroll){
+        let dragging = false, startX = 0, startLeft = 0;
+        hScroll.addEventListener('pointerdown', (e)=>{
+          dragging = true; startX = e.clientX; startLeft = hScroll.scrollLeft; hScroll.setPointerCapture(e.pointerId); hScroll.classList.add('grabbing');
+        });
+        hScroll.addEventListener('pointermove', (e)=>{
+          if(!dragging) return; const dx = e.clientX - startX; hScroll.scrollLeft = startLeft - dx;
+        });
+        const endDrag = ()=>{ dragging = false; hScroll.classList.remove('grabbing'); };
+        hScroll.addEventListener('pointerup', endDrag);
+        hScroll.addEventListener('pointercancel', endDrag);
+        // Keyboard support when focused
+        hScroll.addEventListener('keydown', (e)=>{
+          if(e.key === 'ArrowRight'){ e.preventDefault(); scrollStripBy(1); }
+          if(e.key === 'ArrowLeft'){ e.preventDefault(); scrollStripBy(-1); }
         });
       }
 
